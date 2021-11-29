@@ -18,7 +18,9 @@ $ ./[command] -f cookie_log.csv -d 2018-12-09
 
 ### Build 
 ```
+git clone https://github.com/karthij15/most-active-cookie.git
 cd most-active-cookie/
+
 ./gradlew clean --info build
 ```
 
