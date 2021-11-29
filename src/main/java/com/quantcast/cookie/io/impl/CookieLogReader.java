@@ -1,7 +1,6 @@
 package com.quantcast.cookie.io.impl;
 
 import com.quantcast.cookie.exception.CookieApplicationException;
-import com.quantcast.cookie.exception.InvalidCookieValueException;
 import com.quantcast.cookie.exception.InvalidLogException;
 import com.quantcast.cookie.io.LogReader;
 import com.quantcast.cookie.model.Cookie;
@@ -10,10 +9,19 @@ import com.quantcast.cookie.util.Constants;
 import com.quantcast.cookie.util.ValidationUtil;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+cookie log file reader
+csv formatted file with no header
+Sample format would be
+AtY0laUfhglK3lC7,2018-12-09T14:19:00+00:00
+each line will have cookie value and timestamp separated by comma
+ */
 public class CookieLogReader implements LogReader<CookieRequest, Cookie> {
 
     final static Logger LOG = Logger.getLogger(CookieLogReader.class.getName());
@@ -23,18 +31,14 @@ public class CookieLogReader implements LogReader<CookieRequest, Cookie> {
 
         LOG.debug("Reading log file..");
 
-        if (request == null || ValidationUtil.isEmpty(request.getLogFilePath())) {
+        String logFilePath = request.getLogFilePath();
+
+        if (request == null || !ValidationUtil.isValidLogFile(logFilePath)) {
             LOG.debug("Invalid log file path. please check the input");
             throw new InvalidLogException();
         }
 
         List<Cookie> cookieList = new ArrayList<>();
-
-        String logFilePath = request.getLogFilePath();
-        File logFile = new File(logFilePath);
-
-        if(!logFile.exists())
-            throw new InvalidLogException();
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(logFilePath))) {
 
@@ -52,18 +56,15 @@ public class CookieLogReader implements LogReader<CookieRequest, Cookie> {
                 String cookieValue = lineDetails[0];
                 String timestamp = lineDetails[1];
 
-                Cookie cookie = new Cookie(cookieValue, timestamp);;
+                Cookie cookie = new Cookie(cookieValue, timestamp);
 
-                if (request.getQueryDate().equals(cookie.getDate())) { //consider cookies falling under query date
+                if (request.getQueryDate().equals(cookie.getDate())) { //consider only cookies falling under query date
                     cookieList.add(cookie);
                     queryDateFound = true;
                 } else if (queryDateFound) {
-                    break; // skip processing older query date cookies
+                    break; // since log file is sorted by timestamp, skip processing older cookies
                 }
             }
-        } catch (FileNotFoundException fe) {
-            LOG.debug("Invalid log file " + logFilePath);
-            throw new InvalidLogException(fe);
         } catch (IOException ie) {
             throw new CookieApplicationException(ie);
         }

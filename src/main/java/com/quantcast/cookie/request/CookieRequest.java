@@ -16,19 +16,19 @@ public class CookieRequest {
         isHeaderPresentInFile = headerPresentInFile;
     }
 
-    public void setLogFilePath(String logFilePath) {
-        this.logFilePath = logFilePath;
-    }
-
-    public void setQueryDate(String queryDate) {
-        this.queryDate = queryDate;
-    }
-
     public String getLogFilePath() {
         return logFilePath;
     }
 
+    public void setLogFilePath(String logFilePath) {
+        this.logFilePath = logFilePath;
+    }
+
     public String getQueryDate() {
         return queryDate;
+    }
+
+    public void setQueryDate(String queryDate) {
+        this.queryDate = queryDate;
     }
 }

@@ -2,7 +2,7 @@ package com.quantcast.cookie.exception;
 
 public class CookieApplicationException extends RuntimeException {
 
-    public static final String ERR_MESSAGE = "Exception during processing";
+    public static final String ERR_MESSAGE = "Application Processing Exception";
 
     public CookieApplicationException() {
         super(ERR_MESSAGE);

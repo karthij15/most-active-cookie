@@ -5,7 +5,10 @@ import com.quantcast.cookie.model.Cookie;
 
 import java.util.*;
 
-public class TopKUsingPriorityQueue implements AnalyzerStrategy<Map<Cookie, Integer>, List<Cookie>> {
+/*
+Using priority to queue to sort the cookies based on its occurrence
+ */
+public class MaxHeapAnalyzerStrategy implements AnalyzerStrategy<Map<Cookie, Integer>, List<Cookie>> {
 
     @Override
     public List<Cookie> predict(Map<Cookie, Integer> cookieFrequencyMap) {
@@ -23,7 +26,7 @@ public class TopKUsingPriorityQueue implements AnalyzerStrategy<Map<Cookie, Inte
             int frequency = queue.peek().getValue();
             topFrequency = Math.max(frequency, topFrequency);
 
-            if (frequency < topFrequency)
+            if (frequency < topFrequency) // only most active cookie will be considered
                 break;
 
             maxOccurrenceCookieList.add(queue.poll().getKey());

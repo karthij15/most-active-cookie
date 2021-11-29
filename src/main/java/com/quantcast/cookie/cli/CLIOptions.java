@@ -8,11 +8,6 @@ import static com.quantcast.cookie.util.Constants.*;
 public class CLIOptions {
 
     private static CLIOptions instance = null;
-
-    public Options getCliOptions() {
-        return cliOptions;
-    }
-
     private final Options cliOptions;
 
     private CLIOptions() {
@@ -43,5 +38,9 @@ public class CLIOptions {
         }
 
         return instance;
+    }
+
+    public Options getCliOptions() {
+        return cliOptions;
     }
 }

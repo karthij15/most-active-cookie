@@ -22,7 +22,7 @@ public class Cookie implements Comparable<Cookie> {
 
     public Cookie(String value, String timestamp) {
         this.value = value;
-        if(ValidationUtil.isEmpty(this.value)) {
+        if (ValidationUtil.isEmpty(this.value)) {
             throw new InvalidCookieValueException();
         }
 
