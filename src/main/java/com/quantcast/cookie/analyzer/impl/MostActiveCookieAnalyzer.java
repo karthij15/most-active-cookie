@@ -41,14 +41,9 @@ public class MostActiveCookieAnalyzer implements LogAnalyzer<CookieRequest, List
         List<Cookie> mostActiveCookieList = new ArrayList<>();
 
         try {
-            LogReader<CookieRequest, Cookie> fileReader = new CookieLogReader();
-            List<Cookie> cookieList = fileReader.read(request);
+            LogReader<CookieRequest, Map<Cookie, Integer>> fileReader = new CookieLogReader();
+            Map<Cookie, Integer> cookieFrequencyMap = fileReader.readWithFrequency(request);
 
-            if (ValidationUtil.isInvalidList(cookieList)) {
-                return mostActiveCookieList;
-            }
-
-            Map<Cookie, Integer> cookieFrequencyMap = constructCookieFrequencyMap(cookieList);
             mostActiveCookieList = (List<Cookie>) strategy.predict(cookieFrequencyMap);
 
         } catch (Exception e) {

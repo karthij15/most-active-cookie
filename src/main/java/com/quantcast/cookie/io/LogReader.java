@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface LogReader<I, T> {
 
-    List<T> read(I request);
+    T read(I request);
+
+    T readWithFrequency(I request);
 
 }

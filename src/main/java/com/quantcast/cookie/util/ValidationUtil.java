@@ -21,6 +21,11 @@ public class ValidationUtil {
         return logFile.exists();
     }
 
+    public static boolean isDirectory(String logFilePath) {
+        File logFile = new File(logFilePath);
+        return logFile.isDirectory();
+    }
+
     public static boolean isInvalidList(List<? extends Object> list) {
         return (list == null || list.isEmpty());
     }
